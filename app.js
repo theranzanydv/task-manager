@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 
+// ? custom middleware
+const notFounnd = require('./middlewares/not-found')
+const errorHandlerMiddleware = require('./middlewares/error-handler')
+
 // ? importing routers
 const tasks = require('./routes/tasks')
 
@@ -15,6 +19,12 @@ app.use(express.json())
 // !!! Routes
 app.use('/api/v1/tasks', tasks)
 
+// ! custom response for 404
+app.use(notFounnd)
+
+// ! error handling middleware
+app.use(errorHandlerMiddleware)
+
 const port = 3000
 
 const start = async () => {
@@ -27,4 +37,5 @@ const start = async () => {
 		console.log(error)
 	}
 }
+
 start()
